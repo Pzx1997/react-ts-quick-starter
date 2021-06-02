@@ -17,9 +17,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         // 禁用掉prettier冲突的规则
         'prettier',
-        'prettier/@typescript-eslint',
-        'prettier/react',
-        'prettier/unicorn',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -37,12 +34,7 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        'react',
-        'unicorn',
-        'promise',
-        '@typescript-eslint',
-    ],
+    plugins: ['react', 'unicorn', 'promise', 'prettier', '@typescript-eslint'],
     rules: {
         // 防止引入ts，tsx文件报错
         'import/extensions': [
@@ -56,9 +48,7 @@ module.exports = {
             },
         ],
         'unicorn/prefer-module': 'off',
-        indent: [
-            'error',
-            4,
-        ],
+        indent: ['error', 4],
+        'prettier/prettier': 'error',
     },
-};
+}
