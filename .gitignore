@@ -1,0 +1,12 @@
+# 依赖
+/node_modules
+
+# 生产
+/dist
+/.vscode
+
+# 其他
+yarn.lock
+.vscode
+*.log
+build
