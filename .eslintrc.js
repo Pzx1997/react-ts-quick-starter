@@ -50,5 +50,8 @@ module.exports = {
         'unicorn/prefer-module': 'off',
         indent: ['error', 4],
         'prettier/prettier': 'error',
+        // 取消判断导入格式必须为es5
+        '@typescript-eslint/no-var-requires': 'off',
+        // 'unicorn/import-style': 'off',
     },
 }
