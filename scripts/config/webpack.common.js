@@ -174,4 +174,10 @@ module.exports = {
         react: 'React',
         'react-dom': 'ReactDOM',
     },
+    // 分离代码
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
 }
