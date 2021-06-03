@@ -2,6 +2,7 @@
 
 // eslint-disable-next-line unicorn/import-style
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const { resolve } = require('path')
 const { PROJECT_PATH, isDev } = require('../constants')
 
@@ -49,6 +50,21 @@ module.exports = {
                       minifyURLs: true,
                       useShortDoctype: true,
                   },
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: resolve(PROJECT_PATH, './public'),
+                    to: resolve(PROJECT_PATH, './dist'),
+                    toType: 'dir',
+                    globOptions: {
+                        ignore: [
+                            // 忽略所有HTML文件
+                            '**/*index.html',
+                        ],
+                    },
+                },
+            ],
         }),
     ],
     module: {
