@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
 const { SERVER_HOST, SERVER_PORT } = require('../constants')
+const webpack = require('webpack')
 
 // module.exports = merge(common, {
 //     mode: 'development',
@@ -8,6 +9,7 @@ const { SERVER_HOST, SERVER_PORT } = require('../constants')
 
 module.exports = merge(common, {
     mode: 'development',
+    target: 'web', // webpack5 需要配置为web
     devtool: 'eval-source-map',
     devServer: {
         host: SERVER_HOST, // 指定 host，不设置的话默认是 localhost
@@ -18,4 +20,5 @@ module.exports = merge(common, {
         open: true, // 打开默认浏览器
         hot: true, // 热更新
     },
+    plugins: [new webpack.HotModuleReplacementPlugin()],
 })

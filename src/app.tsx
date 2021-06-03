@@ -10,8 +10,17 @@ export default class App extends Component<any, any> {
     }
 
     render() {
+        console.log('更新')
         return (
             <div>
+                hello world
+                <Header />
+                hello world
+                <br />
+                hello world
+                <br />
+                hello world
+                <Header />
                 hello world
                 <Header />
             </div>
