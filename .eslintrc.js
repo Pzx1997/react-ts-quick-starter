@@ -65,5 +65,6 @@ module.exports = {
         'unicorn/filename-case': 'off',
         'react/prefer-stateless-function': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
+        'no-useless-constructor': 'off',
     },
 }

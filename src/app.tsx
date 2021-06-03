@@ -3,7 +3,12 @@ import React, { Component } from 'react'
 import './app.less'
 import Header from 'Comps/Header'
 
-export default class App extends Component {
+export default class App extends Component<any, any> {
+    constructor(properties: any) {
+        super(properties)
+        this.state = {}
+    }
+
     render() {
         return (
             <div>

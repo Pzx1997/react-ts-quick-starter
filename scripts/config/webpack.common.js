@@ -1,8 +1,9 @@
 // const path = require('path')
 
-// eslint-disable-next-line unicorn/import-style
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const WebpackBar = require('webpackbar')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const { resolve } = require('path')
 const { PROJECT_PATH, isDev } = require('../constants')
 
@@ -51,6 +52,7 @@ module.exports = {
                       useShortDoctype: true,
                   },
         }),
+        // copy公共静态资源到打包目录
         new CopyPlugin({
             patterns: [
                 {
@@ -65,6 +67,17 @@ module.exports = {
                     },
                 },
             ],
+        }),
+        // 展示打包进度
+        new WebpackBar({
+            name: isDev ? '正在启动' : '正在打包',
+            color: 'green',
+        }),
+        // 编译时的 Typescript 类型检查
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                configFile: resolve(PROJECT_PATH, './tsconfig.json'),
+            },
         }),
     ],
     module: {
