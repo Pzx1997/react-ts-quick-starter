@@ -32,6 +32,7 @@ module.exports = {
                 extensions: ['.tsx', '.ts', '.js', '.json'],
                 indent: ['error', 8],
             },
+            typescript: {},
         },
     },
     plugins: ['react', 'unicorn', 'promise', 'prettier', '@typescript-eslint'],
@@ -53,5 +54,16 @@ module.exports = {
         // 取消判断导入格式必须为es5
         '@typescript-eslint/no-var-requires': 'off',
         // 'unicorn/import-style': 'off',
+        'react/jsx-filename-extension': [
+            'error',
+            {
+                extensions: ['.js', '.jsx', '.ts', '.tsx'],
+            },
+        ],
+        'no-use-before-define': 'off',
+        '@typescript-eslint/no-use-before-define': ['error'],
+        'unicorn/filename-case': 'off',
+        'react/prefer-stateless-function': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
     },
 }

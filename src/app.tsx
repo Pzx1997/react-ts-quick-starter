@@ -1,10 +1,15 @@
+import React, { Component } from 'react'
+// import image from './assets/img.png'
 import './app.less'
-// import './app.css'
-import image from './assets/img.png'
+import Header from 'Comps/Header'
 
-const root = document.querySelector('#root')
-root.innerHTML = 'hello, webpack!'
-
-const img = document.createElement('img')
-img.src = image
-root.append(img)
+export default class App extends Component {
+    render() {
+        return (
+            <div>
+                hello world
+                <Header />
+            </div>
+        )
+    }
+}

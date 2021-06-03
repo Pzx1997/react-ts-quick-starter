@@ -8,7 +8,7 @@ const { PROJECT_PATH, isDev } = require('../constants')
 module.exports = {
     // 配置入口文件路径 app表示引入文件的名字
     entry: {
-        app: resolve(PROJECT_PATH, './src/app.js'),
+        app: resolve(PROJECT_PATH, './src/index.tsx'),
     },
     // 配置编译打包之后的文件名以及所在路径
     output: {
@@ -17,6 +17,14 @@ module.exports = {
         // 如果不是生产环境则去掉hash
         filename: `js/[name]${isDev ? '' : '.[hash:8]'}.js`,
         path: resolve(PROJECT_PATH, './dist'),
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js', '.json'],
+        alias: {
+            '@': resolve(PROJECT_PATH, './src'),
+            Comps: resolve(PROJECT_PATH, './src/components'),
+            Utils: resolve(PROJECT_PATH, './src/utils'),
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -45,6 +53,15 @@ module.exports = {
     ],
     module: {
         rules: [
+            {
+                test: /\.(tsx?|js)$/,
+                loader: 'babel-loader',
+                options: {
+                    // 缓存公共文件
+                    cacheDirectory: true,
+                },
+                exclude: /node_modules/,
+            },
             {
                 // 匹配规则
                 test: /\.css$/,

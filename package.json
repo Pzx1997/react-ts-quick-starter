@@ -45,10 +45,18 @@
         "not op_mini all"
     ],
     "devDependencies": {
+        "@babel/core": "^7.14.3",
+        "@babel/plugin-transform-runtime": "^7.14.3",
+        "@babel/preset-env": "^7.14.4",
+        "@babel/preset-react": "^7.13.13",
+        "@babel/preset-typescript": "^7.13.0",
         "@commitlint/cli": "^12.1.4",
         "@commitlint/config-conventional": "^12.1.4",
+        "@types/react": "^17.0.9",
+        "@types/react-dom": "^17.0.6",
         "@typescript-eslint/eslint-plugin": "^4.26.0",
         "@typescript-eslint/parser": "^4.26.0",
+        "babel-loader": "^8.2.2",
         "clean-webpack-plugin": "^4.0.0-alpha.0",
         "conventional-changelog-cli": "^2.1.1",
         "cross-env": "^7.0.3",
@@ -56,6 +64,7 @@
         "eslint": "^7.27.0",
         "eslint-config-airbnb": "^18.2.1",
         "eslint-config-prettier": "^8.3.0",
+        "eslint-import-resolver-typescript": "^2.4.0",
         "eslint-plugin-import": "^2.23.4",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-prettier": "^3.4.0",
@@ -83,5 +92,11 @@
         "webpack-cli": "^4.7.0",
         "webpack-dev-server": "^3.11.2",
         "webpack-merge": "^5.7.3"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.14.0",
+        "@babel/runtime-corejs3": "^7.14.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
     }
 }
