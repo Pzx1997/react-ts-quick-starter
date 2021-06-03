@@ -2,6 +2,7 @@ const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
 const { SERVER_HOST, SERVER_PORT } = require('../constants')
 const webpack = require('webpack')
+const proxySettings = require('../../src/setProxy')
 
 // module.exports = merge(common, {
 //     mode: 'development',
@@ -19,6 +20,9 @@ module.exports = merge(common, {
         compress: true, // 是否启用 gzip 压缩
         open: true, // 打开默认浏览器
         hot: true, // 热更新
+        proxy: {
+            ...proxySettings,
+        },
     },
     plugins: [new webpack.HotModuleReplacementPlugin()],
 })
