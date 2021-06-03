@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const { resolve } = require('path')
 const { PROJECT_PATH, isDev } = require('../constants')
 
@@ -26,6 +27,14 @@ module.exports = {
             '@': resolve(PROJECT_PATH, './src'),
             Comps: resolve(PROJECT_PATH, './src/components'),
             Utils: resolve(PROJECT_PATH, './src/utils'),
+        },
+    },
+    // webpack5自带缓存
+    // https://webpack.js.org/configuration/other-options/#cache
+    cache: {
+        type: 'filesystem',
+        buildDependencies: {
+            config: [__filename],
         },
     },
     plugins: [
@@ -79,6 +88,10 @@ module.exports = {
                 configFile: resolve(PROJECT_PATH, './tsconfig.json'),
             },
         }),
+        // 加快二次编译速度
+        // new HardSourceWebpackPlugin(),
+        // 解决 webpack 报错问题
+        // new HardSourceWebpackPlugin.ExcludeModulePlugin([]),
     ],
     module: {
         rules: [
