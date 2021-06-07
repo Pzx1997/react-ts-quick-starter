@@ -10,13 +10,15 @@ module.exports = {
         'airbnb',
         // 开启 react hooks 的检查
         'airbnb/hooks',
+        // 'eslint:recommended',
         'plugin:react/recommended',
-        'plugin:unicorn/recommended',
-        'plugin:promise/recommended',
+        // 'plugin:unicorn/recommended',
+        // 'plugin:promise/recommended',
         // 开启针对 ts 语法推荐的规则定义
         'plugin:@typescript-eslint/recommended',
         // 禁用掉prettier冲突的规则
         'prettier',
+        'plugin:prettier/recommended',
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -50,7 +52,6 @@ module.exports = {
         ],
         'unicorn/prefer-module': 'off',
         indent: ['error', 4],
-        'prettier/prettier': 'error',
         // 取消判断导入格式必须为es5
         '@typescript-eslint/no-var-requires': 'off',
         // 'unicorn/import-style': 'off',
@@ -66,5 +67,9 @@ module.exports = {
         'react/prefer-stateless-function': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         'no-useless-constructor': 'off',
+        // https://github.com/prettier/eslint-plugin-prettier#recommended-configuration
+        'prettier/prettier': 'error',
+        'arrow-body-style': 'off',
+        'prefer-arrow-callback': 'off',
     },
 }
