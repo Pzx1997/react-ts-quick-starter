@@ -26,9 +26,9 @@ module.exports = merge(common, {
         new CleanWebpackPlugin(),
         // 删除无用的样式代码
         // 引入样式的tsx文件必须要给到 不然无法解析你没有哪个样式类型！！！
-        new PurgeCSSPlugin({
-            paths: glob.sync(`${resolve(PROJECT_PATH, './src')}/**/*.{tsx,scss,less,css}`, { nodir: true }),
-        }),
+        // new PurgeCSSPlugin({
+        //     paths: glob.sync(`${resolve(PROJECT_PATH, './src')}/**/*.{tsx,scss,less,css}`, { nodir: true }),
+        // }),
         new webpack.BannerPlugin({
             raw: true,
             banner: '/** @preserve Powered by react-ts-quick-starter (https://github.com/Pzx1997/react-ts-quick-starter) */',
