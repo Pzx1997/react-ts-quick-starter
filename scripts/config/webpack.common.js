@@ -5,6 +5,9 @@ const CopyPlugin = require('copy-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+
 // 将 css 抽离出来
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { resolve } = require('path')
@@ -225,5 +228,24 @@ module.exports = {
         splitChunks: {
             chunks: 'all',
         },
+        // 指定压缩器
+        minimize: !isDev,
+        minimizer: [
+            // 如果是生产模式就开启压缩
+            // js 代码压缩
+            !isDev &&
+                new TerserPlugin({
+                    // false 意味着去除所有注释 除了有特殊标记(@perserve...)的注释
+                    extractComments: false,
+                    terserOptions: {
+                        compress: {
+                            // 设置我们想要去除的函数
+                            pure_funcs: ['console.log'],
+                        },
+                    },
+                }),
+            // css 代码压缩
+            !isDev && new OptimizeCssAssetsPlugin(),
+        ].filter(Boolean),
     },
 }
