@@ -13,7 +13,7 @@ module.exports = {
         'function-name-case': 'lower',
         'no-descending-specificity': null,
         'no-invalid-double-slash-comments': null,
-        'rule-empty-line-before': 'always',
+        // 'rule-empty-line-before': 'always',
     },
-    ignoreFiles: ['node_modules/**/*', 'build/**/*'],
+    ignoreFiles: ['node_modules/**/*', 'build/**/*', '**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import image from './assets/img.png'
-import './app.less'
+import './index.less'
 import Header from 'Comps/Header'
 
 export default class App extends Component<any, any> {
@@ -12,7 +12,7 @@ export default class App extends Component<any, any> {
     render() {
         console.log('更新')
         return (
-            <div>
+            <div className="container">
                 hello world
                 <Header />
                 hello world
