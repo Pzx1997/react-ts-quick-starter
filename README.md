@@ -2,5 +2,7 @@
 
 ## 运行
 
-npm install or yarn  
+```console
+npm install or yarn
 npm run start or yarn start
+```
