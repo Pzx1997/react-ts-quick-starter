@@ -7,6 +7,7 @@ const webpack = require('webpack')
 const glob = require('glob')
 const PurgeCSSPlugin = require('purgecss-webpack-plugin')
 const { PROJECT_PATH } = require('../constants')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 module.exports = merge(common, {
     mode: 'production',
@@ -22,6 +23,11 @@ module.exports = merge(common, {
         new webpack.BannerPlugin({
             raw: true,
             banner: '/** @preserve Powered by react-ts-quick-starter (https://github.com/Pzx1997/react-ts-quick-starter) */',
+        }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'server', // 开一个本地服务查看报告
+            analyzerHost: '127.0.0.1', // host 设置
+            analyzerPort: 8888, // 端口号设置
         }),
     ],
 })
