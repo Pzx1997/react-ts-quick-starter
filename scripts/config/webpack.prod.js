@@ -7,11 +7,20 @@ const webpack = require('webpack')
 const glob = require('glob')
 const PurgeCSSPlugin = require('purgecss-webpack-plugin')
 const { PROJECT_PATH } = require('../constants')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const TerserPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const paths = require('../paths')
+const { shouldOpenAnalyzer, ANALYZER_HOST, ANALYZER_PORT } = require('../constants')
 
 module.exports = merge(common, {
     mode: 'production',
     devtool: false,
+    output: {
+        filename: 'js/[name].[contenthash:8].js',
+        path: paths.appBuild,
+        assetModuleFilename: 'images/[name].[contenthash:8].[ext]',
+    },
     plugins: [
         // 每次打包清楚上次打包的遗留
         new CleanWebpackPlugin(),
@@ -24,10 +33,36 @@ module.exports = merge(common, {
             raw: true,
             banner: '/** @preserve Powered by react-ts-quick-starter (https://github.com/Pzx1997/react-ts-quick-starter) */',
         }),
-        new BundleAnalyzerPlugin({
-            analyzerMode: 'server', // 开一个本地服务查看报告
-            analyzerHost: '127.0.0.1', // host 设置
-            analyzerPort: 8888, // 端口号设置
-        }),
-    ],
+        shouldOpenAnalyzer &&
+            new BundleAnalyzerPlugin({
+                analyzerMode: 'server', // 开一个本地服务查看报告
+                analyzerHost: ANALYZER_HOST, // host 设置
+                analyzerPort: ANALYZER_PORT, // 端口号设置
+            }),
+    ].filter(Boolean),
+
+    // 分离代码
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            minSize: 0,
+        },
+        // 指定压缩器
+        minimize: true,
+        minimizer: [
+            // js 代码压缩
+            new TerserPlugin({
+                // false 意味着去除所有注释 除了有特殊标记(@perserve...)的注释
+                extractComments: false,
+                terserOptions: {
+                    compress: {
+                        // 设置想要去除的函数
+                        pure_funcs: ['console.log'],
+                    },
+                },
+            }),
+            // css 代码压缩
+            new CssMinimizerPlugin(),
+        ],
+    },
 })

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import image from './assets/img.png'
-import './index.less'
+// import './index.less'
 import Header from 'Comps/Header'
 
 export default class App extends Component<unknown, unknown> {

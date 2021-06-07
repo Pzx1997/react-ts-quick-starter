@@ -1,4 +1,5 @@
 import React from 'react'
+import './index.less'
 
 const Header = () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
@@ -7,9 +8,11 @@ const Header = () => {
     }
 
     return (
-        <div>
+        <div className="container">
             {/* eslint-disable-next-line react/button-has-type */}
-            <button onClick={handleClickButton}>触摸</button>
+            <button className="btn" onClick={handleClickButton}>
+                触摸
+            </button>
         </div>
     )
 }

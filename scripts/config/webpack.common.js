@@ -5,13 +5,15 @@ const CopyPlugin = require('copy-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+// const TerserPlugin = require('terser-webpack-plugin')
+// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 // 将 css 抽离出来
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const { resolve } = require('path')
+// const { resolve } = require('path')
 const { PROJECT_PATH, isDev } = require('../constants')
+
+const paths = require('../paths')
 
 // 抽离出来的loader函数
 const getCssLoaders = (importLoaders) => [
@@ -28,65 +30,68 @@ const getCssLoaders = (importLoaders) => [
         },
     },
     // 将配置项提取出去 单独的 postcss.config 文件
-    'postcss-loader',
-    // {
-    //     // PostCSS 处理浏览器兼容问题
-    //     loader: 'postcss-loader',
-    //     options: {
-    //         postcssOptions: {
-    //             ident: 'postcss',
-    //             // plugins: [
-    //             //     // 修复一些和 flex 布局相关的 bug
-    //             //     require('postcss-flexbugs-fixes'),
-    //             //     require('postcss-preset-env')({
-    //             //         autoprefixer: {
-    //             //             grid: true,
-    //             //             flexbox: 'no-2009',
-    //             //         },
-    //             //         stage: 3,
-    //             //     }),
-    //             //     require('postcss-normalize'),
-    //             // ],
-    //             sourceMap: isDev,
-    //         }
-    //     },
-    // },
+    // 'postcss-loader',
+    {
+        loader: 'postcss-loader',
+        options: {
+            postcssOptions: {
+                plugins: [
+                    require('postcss-flexbugs-fixes'),
+                    isDev && [
+                        'postcss-preset-env',
+                        {
+                            autoprefixer: {
+                                grid: true,
+                                flexbox: 'no-2009',
+                            },
+                            stage: 3,
+                        },
+                    ],
+                ].filter(Boolean),
+            },
+        },
+    },
 ]
 
 // 将 plugins 抽离出来进行配置
 // 不然配置 MiniCssExtractPlugin 会报错
 const plugins = [
     new HtmlWebpackPlugin({
-        template: resolve(PROJECT_PATH, './public/index.html'),
-        filename: 'index.html',
-        // 防止之后使用v6版本 copy-webpack-plugin 时代码修改一刷新页面为空问题
-        cache: false,
+        // template: resolve(PROJECT_PATH, './public/index.html'),
+        template: paths.appHtml,
+        // filename: 'index.html',
+        cache: true,
         // 压缩 配置项
-        minify: isDev
-            ? false
-            : {
-                  removeAttributeQuotes: true,
-                  collapseWhitespace: true,
-                  removeComments: true,
-                  collapseBooleanAttributes: true,
-                  collapseInlineTagWhitespace: true,
-                  removeRedundantAttributes: true,
-                  removeScriptTypeAttributes: true,
-                  removeStyleLinkTypeAttributes: true,
-                  minifyCSS: true,
-                  minifyJS: true,
-                  minifyURLs: true,
-                  useShortDoctype: true,
-              },
+        // minify: isDev
+        //     ? false
+        //     : {
+        //         removeAttributeQuotes: true,
+        //         collapseWhitespace: true,
+        //         removeComments: true,
+        //         collapseBooleanAttributes: true,
+        //         collapseInlineTagWhitespace: true,
+        //         removeRedundantAttributes: true,
+        //         removeScriptTypeAttributes: true,
+        //         removeStyleLinkTypeAttributes: true,
+        //         minifyCSS: true,
+        //         minifyJS: true,
+        //         minifyURLs: true,
+        //         useShortDoctype: true,
+        //     },
     }),
     // copy公共静态资源到打包目录
     new CopyPlugin({
         patterns: [
             {
-                from: resolve(PROJECT_PATH, './public'),
-                to: resolve(PROJECT_PATH, './dist'),
+                // from: resolve(PROJECT_PATH, './public'),
+                // to: resolve(PROJECT_PATH, './dist'),
+                context: paths.appPublic,
+                from: '*',
+                to: paths.appBuild,
                 toType: 'dir',
                 globOptions: {
+                    dot: true,
+                    gitignore: true,
                     ignore: [
                         // 忽略所有HTML文件
                         '**/*index.html',
@@ -98,12 +103,13 @@ const plugins = [
     // 展示打包进度
     new WebpackBar({
         name: isDev ? '正在启动' : '正在打包',
-        color: 'green',
+        color: isDev ? '#5973ff' : '#722ed1',
     }),
     // 编译时的 Typescript 类型检查
     new ForkTsCheckerWebpackPlugin({
         typescript: {
-            configFile: resolve(PROJECT_PATH, './tsconfig.json'),
+            // configFile: resolve(PROJECT_PATH, './tsconfig.json'),
+            configFile: paths.appTsConfig,
         },
     }),
 ]
@@ -113,8 +119,7 @@ if (!isDev) {
     plugins.push(
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash:8].css',
-            chunkFilename: 'css/[name].[contenthash:8].css',
-            ignoreOrder: false,
+            chunkFilename: 'css/[name].[contenthash:8].chunk.css',
         }),
     )
 }
@@ -122,22 +127,26 @@ if (!isDev) {
 module.exports = {
     // 配置入口文件路径 app表示引入文件的名字
     entry: {
-        app: resolve(PROJECT_PATH, './src/index.tsx'),
+        app: paths.appIndex,
     },
     // 配置编译打包之后的文件名以及所在路径
-    output: {
-        // 表示命名与入口文件命名一致，并带有8位hash值的打包之后的js文件
-        // filename: 'js/[name].[hash:8].js',
-        // 如果不是生产环境则去掉hash
-        filename: `js/[name]${isDev ? '' : '.[hash:8]'}.js`,
-        path: resolve(PROJECT_PATH, './dist'),
-    },
+    // output: {
+    // 表示命名与入口文件命名一致，并带有8位hash值的打包之后的js文件
+    // filename: 'js/[name].[hash:8].js',
+    // 如果不是生产环境则去掉hash
+    // filename: `js/[name]${isDev ? '' : '.[hash:8]'}.js`,
+    // path: resolve(PROJECT_PATH, './dist'),
+    // path: paths.appBuild,
+    // },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.json'],
         alias: {
-            '@': resolve(PROJECT_PATH, './src'),
-            Comps: resolve(PROJECT_PATH, './src/components'),
-            Utils: resolve(PROJECT_PATH, './src/utils'),
+            // '@': resolve(PROJECT_PATH, './src'),
+            // Comps: resolve(PROJECT_PATH, './src/components'),
+            // Utils: resolve(PROJECT_PATH, './src/utils'),
+            '@': paths.appSrc,
+            Comps: paths.appSrcComponents,
+            Utils: paths.appSrcUtils,
         },
     },
     // webpack5自带缓存
@@ -178,12 +187,12 @@ module.exports = {
                 //         },
                 //     },
                 // ],
-                use: getCssLoaders(0),
+                use: getCssLoaders(1),
             },
             {
                 test: /\.less$/,
                 use: [
-                    ...getCssLoaders(1),
+                    ...getCssLoaders(2),
                     {
                         loader: 'less-loader',
                         options: {
@@ -222,30 +231,5 @@ module.exports = {
     externals: {
         react: 'React',
         'react-dom': 'ReactDOM',
-    },
-    // 分离代码
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-        },
-        // 指定压缩器
-        minimize: !isDev,
-        minimizer: [
-            // 如果是生产模式就开启压缩
-            // js 代码压缩
-            !isDev &&
-                new TerserPlugin({
-                    // false 意味着去除所有注释 除了有特殊标记(@perserve...)的注释
-                    extractComments: false,
-                    terserOptions: {
-                        compress: {
-                            // 设置我们想要去除的函数
-                            pure_funcs: ['console.log'],
-                        },
-                    },
-                }),
-            // css 代码压缩
-            !isDev && new OptimizeCssAssetsPlugin(),
-        ].filter(Boolean),
     },
 }

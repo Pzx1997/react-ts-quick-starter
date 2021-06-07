@@ -10,14 +10,12 @@ module.exports = {
         'airbnb',
         // 开启 react hooks 的检查
         'airbnb/hooks',
-        // 'eslint:recommended',
         'plugin:react/recommended',
-        // 'plugin:unicorn/recommended',
-        // 'plugin:promise/recommended',
+        'plugin:unicorn/recommended',
+        'plugin:promise/recommended',
         // 开启针对 ts 语法推荐的规则定义
         'plugin:@typescript-eslint/recommended',
         // 禁用掉prettier冲突的规则
-        'prettier',
         'plugin:prettier/recommended',
     ],
     parser: '@typescript-eslint/parser',
@@ -32,12 +30,11 @@ module.exports = {
         'import/resolver': {
             node: {
                 extensions: ['.tsx', '.ts', '.js', '.json'],
-                indent: ['error', 8],
             },
             typescript: {},
         },
     },
-    plugins: ['react', 'unicorn', 'promise', 'prettier', '@typescript-eslint'],
+    plugins: ['react', 'unicorn', 'promise', '@typescript-eslint', 'prettier'],
     rules: {
         // 防止引入ts，tsx文件报错
         'import/extensions': [
@@ -71,5 +68,6 @@ module.exports = {
         'prettier/prettier': 'error',
         'arrow-body-style': 'off',
         'prefer-arrow-callback': 'off',
+        'unicorn/prevent-abbreviations': 'off',
     },
 }
